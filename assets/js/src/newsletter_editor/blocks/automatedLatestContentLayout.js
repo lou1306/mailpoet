@@ -330,7 +330,7 @@ Module.AutomatedLatestContentLayoutBlockSettingsView = base.BlockSettingsView.ex
       }
     }
 
-    if (value === 'excerpt') {
+    if (value !== 'titleOnly') {
       this.$('.mailpoet_automated_latest_content_featured_image_position_container').removeClass('mailpoet_hidden');
       this.$('.mailpoet_automated_latest_content_title_position_separator').removeClass('mailpoet_hidden');
       this.$('.mailpoet_automated_latest_content_title_position').removeClass('mailpoet_hidden');

@@ -49,7 +49,7 @@ class PostTransformer {
       $featuredImage
       && $featuredImagePosition === 'belowTitle'
       && (
-        $this->args['displayType'] === 'excerpt'
+        $this->args['displayType'] !== 'titleOnly'
         || $this->extractor->isProduct($post)
       )
     ) {
@@ -63,7 +63,7 @@ class PostTransformer {
       array_unshift($content, $title);
     }
 
-    if ($featuredImage && $this->args['displayType'] === 'excerpt') {
+    if ($featuredImage && $this->args['displayType'] !== 'titleOnly') {
       array_unshift($content, $featuredImage);
     }
 
@@ -82,7 +82,7 @@ class PostTransformer {
       !$featuredImage
       || $featuredImagePosition === 'none'
       || (
-        $this->args['displayType'] !== 'excerpt'
+        $this->args['displayType'] === 'titleOnly'
         && !$this->extractor->isProduct($post)
       )
     ) {

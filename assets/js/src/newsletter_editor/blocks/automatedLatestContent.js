@@ -72,6 +72,7 @@ Module.AutomatedLatestContentBlockModel = base.BlockModel.extend({
       titleIsLink: false, // false|true
       imageFullWidth: false, // true|false
       featuredImagePosition: 'belowTitle', // 'aboveTitle'|'belowTitle'|'none'
+      featuredImageForFullPostEnabled: false, // true|false
       showAuthor: 'no', // 'no'|'aboveText'|'belowText'
       authorPrecededBy: 'Author:',
       showCategories: 'no', // 'no'|'aboveText'|'belowText'
@@ -102,6 +103,13 @@ Module.AutomatedLatestContentBlockModel = base.BlockModel.extend({
     this.listenTo(this.get('divider'), 'change', this._handleChanges);
     this.on('add remove update reset', this._handleChanges);
     this.on('refreshPosts', this.updatePosts, this);
+
+    // This is for back compatibility with existing posts with display type 'full' that don't have
+    // a featured image but contain some value for 'featuredImagePosition' - we reset it to 'none'.
+    if (this.get('displayType') === 'full' && !this.get('featuredImageForFullPostEnabled')) {
+      this.set('featuredImagePosition', 'none');
+    }
+    this.set('featuredImageForFullPostEnabled', true);
   },
   updatePosts: function (posts) {
     this.get('_container.blocks').reset(posts, { parse: true });

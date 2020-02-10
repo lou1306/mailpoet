@@ -52,6 +52,7 @@ Module.PostsBlockModel = base.BlockModel.extend({
       imageFullWidth: false, // true|false
       titlePosition: 'abovePost', // 'abovePost'|'aboveExcerpt'
       featuredImagePosition: 'centered', // 'centered'|'right'|'left'|'alternate'|'none'
+      featuredImageForFullPostEnabled: false, // true|false
       showAuthor: 'no', // 'no'|'aboveText'|'belowText'
       authorPrecededBy: 'Author:',
       showCategories: 'no', // 'no'|'aboveText'|'belowText'
@@ -105,6 +106,13 @@ Module.PostsBlockModel = base.BlockModel.extend({
     this.listenTo(App.getChannel(), 'hideSettings', this.destroy);
 
     this.on('insertSelectedPosts', this._insertSelectedPosts, this);
+
+    // This is for back compatibility with existing posts with display type 'full' that don't have
+    // a featured image but contain some value for 'featuredImagePosition' - we reset it to 'none'.
+    if (this.get('displayType') === 'full' && !this.get('featuredImageForFullPostEnabled')) {
+      this.set('featuredImagePosition', 'none');
+    }
+    this.set('featuredImageForFullPostEnabled', true);
   },
   fetchAvailablePosts: function () {
     var that = this;

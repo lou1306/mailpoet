@@ -43,7 +43,7 @@ class PostTransformer {
     $content = $this->extractor->getContent($post, true, $this->args['displayType']);
     $title = $this->extractor->getTitle($post);
     $featuredImage = $this->extractor->getFeaturedImage($post);
-    $featuredImagePosition = $this->args['featuredImagePosition'];
+    $featuredImagePosition = $this->getFeaturedImagePosition();
 
     if (
       $featuredImage
@@ -75,8 +75,7 @@ class PostTransformer {
     $content = $this->extractor->getContent($post, $withPostClass, $this->args['displayType']);
     $title = $this->extractor->getTitle($post);
     $featuredImage = $this->extractor->getFeaturedImage($post);
-
-    $featuredImagePosition = $this->args['featuredImagePosition'];
+    $featuredImagePosition = $this->getFeaturedImagePosition();
 
     if (
       !$featuredImage
@@ -152,5 +151,19 @@ class PostTransformer {
   private function nextImagePosition() {
     $this->imagePosition = ($this->imagePosition === 'left') ? 'right' : 'left';
     return $this->imagePosition;
+  }
+
+  private function getFeaturedImagePosition() {
+    // If 'featuredImageForFullPostEnabled' is not set for display type 'full' posts, return 'none'.
+    // This is for back compatibility with posts that don't have featured image but contain some
+    // value for 'featuredImagePosition' stored in the DB.
+    $isFullPost = $this->args['displayType'] === 'full';
+    $featuredImageForFullPostEnabled = isset($this->args['featuredImageForFullPostEnabled'])
+      ? (bool)filter_var($this->args['featuredImageForFullPostEnabled'], FILTER_VALIDATE_BOOLEAN)
+      : false;
+    if ($isFullPost && !$featuredImageForFullPostEnabled) {
+      return 'none';
+    }
+    return $this->args['featuredImagePosition'];
   }
 }

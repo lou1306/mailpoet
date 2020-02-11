@@ -131,6 +131,7 @@ class Forms extends APIEndpoint {
   public function previewEditor($data = []) {
     // html
     $html = FormRenderer::renderHTML($data);
+    $html = str_replace('type="submit"', 'type="submit" disabled', $html);
 
     // convert shortcodes
     $html = WPFunctions::get()->doShortcode($html);

@@ -64,12 +64,14 @@ export default () => {
                 <UnsavedChangesNotice />
                 <BlockSelectionClearer className="edit-post-visual-editor editor-styles-wrapper">
                   <BlockEditorKeyboardShortcuts />
-                  <WritingFlow>
-                    <ObserveTyping>
-                      <FormTitle />
-                      <BlockList />
-                    </ObserveTyping>
-                  </WritingFlow>
+                  <div className="mailpoet_form">
+                    <WritingFlow>
+                      <ObserveTyping>
+                        <FormTitle />
+                        <BlockList />
+                      </ObserveTyping>
+                    </WritingFlow>
+                  </div>
                 </BlockSelectionClearer>
               </div>
               <div className="edit-post-editor-regions__sidebar">
